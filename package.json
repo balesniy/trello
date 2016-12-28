@@ -1,0 +1,21 @@
+{
+  "name": "application-name",
+  "version": "0.0.1",
+  "dependencies": {
+    "juice": "^3.0.1",
+    "jwt-simple": "^0.5.1",
+    "koa": "^2.0.0-alpha.7",
+    "koa-bodyparser": "^3.2.0",
+    "koa-favicon": "^2.0.0",
+    "koa-logger": "^2.0.0",
+    "koa-passport": "^3.0.0-rc.2",
+    "koa-router": "^7.0.1",
+    "mongoose": "^4.6.8",
+    "mongoose-beautiful-unique-validation": "^5.1.1",
+    "nodemailer": "^2.6.4",
+    "nodemailer-html-to-text": "^2.1.0",
+    "nodemailer-smtp-transport": "latest",
+    "nodemailer-stub-transport": "^1.1.0",
+    "passport-jwt": "^2.2.1"
+  }
+}
