@@ -1,5 +1,5 @@
-var passport = require('koa-passport');
-var jwt = require("jwt-simple");
+//const passport = require('koa-passport');
+const jwt = require("jwt-simple");
 let User = require('../models/user');
 exports.post = async function (ctx) {
   const { email, password } = ctx.request.body;
@@ -13,7 +13,7 @@ exports.post = async function (ctx) {
     // don't say whether the user exists
     ctx.body = { message: 'Нет такого пользователя или пароль неверен.' };
   }
-  var token = jwt.encode(email, 'MyS3cr3tK3Y');
+  const token = jwt.encode(email, 'MyS3cr3tK3Y');
   ctx.body = {
     token,
     name: user.displayName

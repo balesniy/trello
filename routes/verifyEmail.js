@@ -1,7 +1,7 @@
-var User = require('../models/user');
+let User = require('../models/user');
 
 exports.get = async function (ctx) {
-  var user = await User.findOne({
+  const user = await User.findOne({
     verifyEmailToken: ctx.params.token
   });
   if (!user) {
@@ -16,7 +16,6 @@ exports.get = async function (ctx) {
   if (!user.verifiedEmail) {
     user.verifiedEmail = true;
     await user.save();
-
   }
   else if (user.pendingVerifyEmail) {
     user.email = user.pendingVerifyEmail;
@@ -31,13 +30,11 @@ exports.get = async function (ctx) {
         ctx.throw(400, 'Изменение email невозможно, адрес уже занят.');
       }
     }
-
   }
   else {
     ctx.throw(404, 'Изменений не произведено: ваш email и так верифицирован, его смена не запрашивалась.');
   }
 
   delete user.verifyEmailToken;
-
   await ctx.login(user);
 };

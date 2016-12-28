@@ -4,8 +4,8 @@ const sendMail = require('../libs/sendMail');
 
 exports.post = async function (ctx) {
   const { email, password, name } = ctx.request.body;
-  var verifyEmailToken = Math.random().toString(36).slice(2, 10);
-  var user = new User({
+  const verifyEmailToken = Math.random().toString(36).slice(2, 10);
+  const user = new User({
     email:            email.toLowerCase(),
     displayName:      name.trim(),
     password,
