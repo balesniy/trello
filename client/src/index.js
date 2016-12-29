@@ -5,6 +5,8 @@ import {createStore, applyMiddleware} from 'redux';
 import {Router, Route, browserHistory, IndexRedirect} from 'react-router';
 import Home from './components/Home';
 import Login from './components/Login';
+import Page from './containers/Page';
+import Projects from './containers/Projects';
 import Container from './containers/Login';
 import rootReducer from './reducers'
 import createLogger from 'redux-logger'
@@ -23,7 +25,9 @@ const requireAuth = (nextState, replace) => {
 };
 
 const initialState = {
-  user: {},
+  user:     {},
+  projects: [],
+  tasks:    []
 };
 const store = createStore(rootReducer, initialState, applyMiddleware(promiseMiddleware, createLogger()));
 ReactDOM.render(
@@ -33,6 +37,8 @@ ReactDOM.render(
         <IndexRedirect to="/home"/>
         <Route path="home" component={Home} onEnter={requireAuth}/>
         <Route path="login" component={Login}/>
+        <Route path="projects" component={Projects}/>
+        <Route path="page" component={Page}/>
       </Route>
     </Router>
   </Provider>,

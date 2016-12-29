@@ -65,8 +65,8 @@ export class AuthService extends EventEmitter {
       return response
     }
     else {
-      var error = new Error(response.statusText);;;;;;;;;;;;;
-      error.response = response;;;;;;;;;;;;;
+      var error = new Error(response.statusText);
+      error.response = response;
       throw error
     }
   }
@@ -76,7 +76,7 @@ export class AuthService extends EventEmitter {
     const headers = {
       'Accept':       'application/json',
       'Content-Type': 'application/json'
-    };;;;;;;;;;;;;
+    };
     // if logged in, includes the authorization header
     if (this.loggedIn()) {
       headers['Authorization'] = 'Bearer ' + this.getToken()
@@ -92,9 +92,9 @@ export class AuthService extends EventEmitter {
 
   _doAuthentication(authResult) {
     // Saves the user token
-    this.setToken(authResult.idToken);;;;;;;;;;;;;
+    this.setToken(authResult.idToken);
     // navigate to the home route
-    browserHistory.replace('/home');;;;;;;;;;;;;
+    browserHistory.replace('/home');
     // Async loads the user profile data
     this.lock.getProfile(authResult.idToken, (error, profile) => {
       if (error) {
@@ -108,6 +108,7 @@ export class AuthService extends EventEmitter {
 
   setProfile(profile) {
     // Saves profile data to local storage
+    console.log(profile);;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     localStorage.setItem('profile', JSON.stringify(profile));
     // Triggers profile_updated event to update the UI
     this.emit('profile_updated', profile)

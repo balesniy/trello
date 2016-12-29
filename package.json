@@ -17,6 +17,7 @@
     "nodemailer-html-to-text": "^2.1.0",
     "nodemailer-smtp-transport": "latest",
     "nodemailer-stub-transport": "^1.1.0",
-    "passport-jwt": "^2.2.1"
+    "passport-jwt": "^2.2.1",
+    "socket.io": "^1.7.2"
   }
 }

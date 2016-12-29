@@ -1,4 +1,5 @@
 const Koa = require('koa');
+const io = require('socket.io');
 const app = new Koa();
 const path = require('path');
 const fs = require('fs');
@@ -15,7 +16,7 @@ middlewares.forEach(function (middleware) {
 const Router = require('koa-router');
 
 const router = new Router();
-var authenticate = jwt({
+const authenticate = jwt({
   secret:   '7RrOvToIjnKgRHSM0YiKrlE0JKScQj7-97X1xjZ1i_l6OD8AMcYVoofj1ytyS9jF',
   audience: '7ZkyiHp2zJFhK01NQMXYcMhArdOAq2Z2'
 });
@@ -23,7 +24,7 @@ router.post('/login', require('./routes/login').post);
 router.post('/register', require('./routes/register').post);
 router.get('/verify-email/:token', require('./routes/verifyEmail').get);
 router.get('/api/private', authenticate, function (ctx) {
-  ctx.body = { message: 'secret' };
+  ctx.body = { message: ctx.state.user.sub };
 });
 router.get('/api/public', function (ctx) {
   ctx.body = { message: "Hello from a public endpoint! You don't need to be authenticated to see this." }
@@ -48,4 +49,6 @@ app.use(router.routes());
 //   }
 // });
 
-app.listen(3001, () => console.log('listening...'));
+const server = app.listen(3001, () => console.log('listening...'));
+const socket = io(server);
+socket.on('connection', () => console.log('connected'));
