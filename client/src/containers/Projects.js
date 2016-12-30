@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes as T} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as projectsActionsCreators from '../actions/projectsActions';
@@ -17,15 +17,27 @@ import {
 } from 'react-bootstrap'
 
 class Projects extends Component {
+  static contextTypes = {
+    router: T.object
+  };
+
   handleSubmit(e) {
     e.preventDefault();
     const [name] = e.target.elements;
-    this.props.projectsActions.addProject({
+    this.props.projectsActions.addProject(this.props.auth, {
       id:   Date.now(),
       name: name.value
     });
     // const { replace } = this.props.router;
     // this.props.userActions.loginUser(email.value, password.value).then(() => replace('/projects'))
+  }
+
+  componentDidMount() {
+    this.props.projectsActions.getProjects(this.props.auth).then(console.log);
+  }
+
+  getProject(_id) {
+    this.context.router.push(`/page/${_id}`);
   }
 
   render() {
@@ -51,10 +63,10 @@ class Projects extends Component {
           <Col xs={12} md={8}>
             <Panel>
               <ListGroup>
-                {this.props.projects.map(({ id, name }) =>
-                  <ListGroupItem key={id}>
-                    {name}
-                    <Button onClick={() => removeProject(id)}>X</Button>
+                {this.props.projects.map(({ _id, name }) =>
+                  <ListGroupItem key={_id}>
+                    <Button onClick={() => removeProject(this.props.auth, _id)}>X</Button>
+                    <a href="#" onClick={() => this.getProject(_id)}>{name}</a>
                   </ListGroupItem>)}
               </ListGroup>
             </Panel>

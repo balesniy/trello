@@ -11,14 +11,19 @@ class Page extends Component {
   add(e) {
     e.preventDefault();
     const [name, description] = e.target.elements;
+    const author = this.props.auth.getProfile();
     this.props.pageActions.add({
-      name,
-      description
+      name:        name.value,
+      description: description.value,
+      author:      author.name,
+      status:      'todo',
+      order:       this.props.tasks.filter(task => task.status === 'todo').length,
+      id:          Date.now()
     });
   }
 
   componentDidMount() {
-    this.props.pageActions.getTasks()
+    this.props.pageActions.getTasks(this.props.auth, this.props.params.id)
   }
 
   render() {
@@ -28,7 +33,7 @@ class Page extends Component {
     const done = tasks.filter(task => task.status === 'done');
     return <div className="container">
       <div className="page-header">
-        <h1 className="text-center">h1. Bootstrap heading</h1>
+        <h1 className="text-center">{this.props.params.id}</h1>
       </div>
       <div className="row">
         <AddTaskForm onSubmit={this.add.bind(this)}/>

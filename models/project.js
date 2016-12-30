@@ -8,8 +8,7 @@ const taskSchema = new mongoose.Schema({
     type: String,
   },
   author:      {
-    type: mongoose.Schema.Types.ObjectId,
-    ref:  'User'
+    type: String,
   },
   status:      {
     type:     String,
@@ -54,19 +53,17 @@ const projectSchema = new mongoose.Schema({
   tasks: [taskSchema],
   users: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref:  'User'
+      type:     String,
+      required: 'Проекту нужен хозяин',
     }
   ]
 }, {
   timestamps: true
 });
-projectSchema.methods.addUser = async function (_id) {
-  this.users.addToSet(_id);
+projectSchema.methods.addUser = async function (id) {
+  this.users.addToSet(id);
   await this.save();
   return this
 };
-projectSchema.methods.getUsers = async function () {
-  return await this.populate('users')
-};
+
 module.exports = mongoose.model('Project', projectSchema);

@@ -1,9 +1,10 @@
-const GET_TASKS_SUCCESS = 'GET_TASKS_SUCCESS';
 import {handleActions} from 'redux-actions';
+import {getTasks, add} from '../actions/pageActions'
 export default handleActions({
-    [GET_TASKS_SUCCESS]: (state, action) => action.payload.sort((a, b) => a.order - b.order),
-    CLOSE:               (state, action) => state.filter(({ id }) => id !== action.payload.id),
-    UP:                  (state, action) => {
+    [getTasks]: (state, action) => action.payload.tasks.sort((a, b) => a.order - b.order),
+    [add]:      (state, action) => [...state, action.payload],
+    CLOSE:      (state, action) => state.filter(({ id }) => id !== action.payload.id),
+    UP:         (state, action) => {
       const { id } = action.payload;
       const item = state.find(task => task.id === id);
       const { order, status } = item;
@@ -15,7 +16,7 @@ export default handleActions({
       const updatedItem = { ...item, ...{ order: order - 1 } };
       return [...state.filter(task => task !== item && task !== prev), updatedItem, updatedPrev]
     },
-    DOWN:                (state, action) => {
+    DOWN:       (state, action) => {
       const { id } = action.payload;
       const item = state.find(task => task.id === id);
       const { order, status } = item;
@@ -27,7 +28,7 @@ export default handleActions({
       const updatedItem = { ...item, ...{ order: order + 1 } };
       return [...state.filter(task => task !== item && task !== prev), updatedItem, updatedPrev]
     },
-    NEXT:                (state, action) => {
+    NEXT:       (state, action) => {
       const { id } = action.payload;
       const item = state.find(task => task.id === id);
       const nextStatus = item.status === 'todo' ? 'inprogress' : 'done';
@@ -43,7 +44,7 @@ export default handleActions({
       };
       return [...state.filter(task => task !== item), updatedItem]
     },
-    PREV:                (state, action) => {
+    PREV:       (state, action) => {
       const { id } = action.payload;
       const item = state.find(task => task.id === id);
       const nextStatus = item.status === 'done' ? 'inprogress' : 'todo';
@@ -59,7 +60,7 @@ export default handleActions({
       };
       return [...state.filter(task => task !== item), updatedItem]
     },
-    UPDATE:              (state, action) => {
+    UPDATE:     (state, action) => {
       const { status, tasks, from } = action.payload;
       if (status === from.status) {
         return [...state.filter(task => task.status !== status), ...tasks]

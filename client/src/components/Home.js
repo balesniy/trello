@@ -7,11 +7,11 @@ import ProfileDetails from './ProfileDetails'
 export class Home extends React.Component {
   static contextTypes = {
     router: T.object
-  };;;;;;;;;;;;;;;;;;;;;;;;;
+  };
 
   static propTypes = {
     auth: T.instanceOf(AuthService)
-  };;;;;;;;;;;;;;;;;;;;;;;;;
+  };
 
   constructor(props, context) {
     super(props, context);

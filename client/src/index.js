@@ -37,8 +37,8 @@ ReactDOM.render(
         <IndexRedirect to="/home"/>
         <Route path="home" component={Home} onEnter={requireAuth}/>
         <Route path="login" component={Login}/>
-        <Route path="projects" component={Projects}/>
-        <Route path="page" component={Page}/>
+        <Route path="projects" component={Projects} onEnter={requireAuth}/>
+        <Route path="page/:id" component={Page}/>
       </Route>
     </Router>
   </Provider>,
