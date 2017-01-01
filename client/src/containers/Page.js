@@ -18,7 +18,7 @@ class Page extends Component {
       author:      author.name,
       status:      'todo',
       order:       this.props.tasks.filter(task => task.status === 'todo').length,
-      id:          Date.now()
+      project:     this.props.params.id
     });
   }
 
@@ -28,20 +28,21 @@ class Page extends Component {
 
   render() {
     const { pageActions, tasks } = this.props;
+    const project = this.props.params.id;
     const todo = tasks.filter(task => task.status === 'todo');
     const inprogress = tasks.filter(task => task.status === 'inprogress');
     const done = tasks.filter(task => task.status === 'done');
     return <div className="container">
       <div className="page-header">
-        <h1 className="text-center">{this.props.params.id}</h1>
+        <h1 className="text-center">{project}</h1>
       </div>
       <div className="row">
         <AddTaskForm onSubmit={this.add.bind(this)}/>
       </div>
       <div className="row">
-        <Column tasks={todo} status="todo" {...pageActions}/>
-        <Column tasks={inprogress} status="inprogress" {...pageActions}/>
-        <Column tasks={done} status="done" {...pageActions}/>
+        <Column tasks={todo} status="todo" {...pageActions} project={project}/>
+        <Column tasks={inprogress} status="inprogress" {...pageActions} project={project}/>
+        <Column tasks={done} status="done" {...pageActions} project={project}/>
       </div>
     </div>
   }

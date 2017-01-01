@@ -68,9 +68,33 @@ app.use(router.routes()).use(router.allowedMethods());
 const server = app.listen(3001, () => console.log('listening...'));
 const io = socketio(server);
 io.on('connection', (socket) => {
-  console.log('connected');
-  socket.on('tasks:up', (data, cb) => {
-    console.log(data);
-    cb(data);
-  })
+  socket.on('tasks:next', async(data, cb) => {
+    const project = await Project.findById(data.project);
+    cb(await project.nextTask(data));
+  });
+  socket.on('tasks:prev', async(data, cb) => {
+    const project = await Project.findById(data.project);
+    cb(await project.prevTask(data));
+  });
+  socket.on('tasks:add', async(data, cb) => {
+    const project = await Project.findById(data.project);
+    cb(await project.addTask(data));
+  });
+  socket.on('tasks:delete', async(data, cb) => {
+    const project = await Project.findById(data.project);
+    cb(await project.deleteTask(data));
+  });
+  socket.on('tasks:up', async(data, cb) => {
+    const project = await Project.findById(data.project);
+    cb(await project.upTask(data));
+  });
+  socket.on('tasks:down', async(data, cb) => {
+    const project = await Project.findById(data.project);
+    cb(await project.downTask(data));
+  });
+  socket.on('tasks:update', async(data, cb) => {
+    const project = await Project.findById(data.project);
+    cb(await project.updateTask(data));
+  });
+
 });

@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import {DragSource, DropTarget} from 'react-dnd';
 
 const taskSource = {
-  beginDrag({ id, name, description, removeCard, moveCard, status, index }) {
+  beginDrag({ _id, name, description, removeCard, moveCard, status, index }) {
     return {
-      id,
+      _id,
       name,
       description,
       removeCard,
@@ -17,7 +17,7 @@ const taskSource = {
     const item = monitor.getItem();
     const didDrop = monitor.didDrop();
     if (!didDrop) {
-      props.moveCard(item, item.id);
+      props.moveCard(item, item._id);
     }
   }
 };
@@ -28,8 +28,8 @@ const taskTarget = {
 
   hover(props, monitor) {
     const dragged = monitor.getItem();
-    const { id: overId } = props;
-    if (dragged.id !== overId) {
+    const { _id: overId } = props;
+    if (dragged._id !== overId) {
       props.moveCard(dragged, overId);
     }
   }

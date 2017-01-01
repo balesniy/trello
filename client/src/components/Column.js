@@ -7,8 +7,8 @@ const columnTarget = {
   drop(props, monitor, component) {
     props.update(props.status, component.state.tasks, {
       status: monitor.getItem().status,
-      id:     monitor.getItem().id
-    });
+      _id:    monitor.getItem()._id
+    }, props.project);
   },
   hover(_, monitor, component){
     if (monitor.isOver({ shallow: true })) {
@@ -38,11 +38,11 @@ class Column extends Component {
   }
 
   moveCard(dragged, overId) {
-    const draggedIndex = this.state.tasks.findIndex(({ id }) => id === dragged.id);
+    const draggedIndex = this.state.tasks.findIndex(({ _id }) => _id === dragged._id);
     if (!~draggedIndex) {
-      dragged.removeCard(dragged.id);
+      dragged.removeCard(dragged._id);
     }
-    const overIndex = this.state.tasks.findIndex(({ id }) => id === overId);
+    const overIndex = this.state.tasks.findIndex(({ _id }) => _id === overId);
     this.setState(update(this.state, {
       tasks: {
         $splice: [
@@ -54,7 +54,7 @@ class Column extends Component {
   }
 
   removeCard(draggedId) {
-    const index = this.state.tasks.findIndex(({ id }) => id === draggedId);
+    const index = this.state.tasks.findIndex(({ _id }) => _id === draggedId);
     if (!~index) {
       return;
     }
@@ -68,29 +68,43 @@ class Column extends Component {
   }
 
   render() {
-    const { connectDropTarget, isOver } = this.props;
-    const { status } = this.props;
+    const { connectDropTarget } = this.props;
+    const { status, project } = this.props;
     const { up, down, prev, next, close } = this.props;
-    const taskList = this.state.tasks.map(({ name, description, id, order }, index) =>
-      <Task key={id}
-            id={id}
+    const taskList = this.state.tasks.map(({ name, description, _id, order }) =>
+      <Task key={_id}
+            _id={_id}
             name={name}
             order={order}
-            index={index}
             status={status}
             description={description}
             moveCard={this.moveCard.bind(this)}
             removeCard={this.removeCard.bind(this)}
-            close={() => close(id)}
-            up={() => up(id)}
-            down={() => down(id)}
-            next={() => next(id)}
-            prev={() => prev(id)}
+            close={() => close({
+              _id,
+              project
+            })}
+            up={() => up({
+              _id,
+              project
+            })}
+            down={() => down({
+              _id,
+              project
+            })}
+            next={() => next({
+              _id,
+              project
+            })}
+            prev={() => prev({
+              _id,
+              project
+            })}
       />);
     return <div className="col-sm-4">
       <div className="panel panel-default">
         <div className="panel-heading">
-          {status}{isOver ? 'nen' : 'nfv'}
+          {status}
           <span className="badge pull-right">{this.state.tasks.length}</span>
         </div>
         <div className="panel-body">
